@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Emotion Detector</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0d0d0d;
+      color: #ff4d4d;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 50px;
+      overflow: hidden;
+      cursor: none; /* Hide default cursor */
+    }
+
+    /* Custom cursor style */
+    #custom-cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      background-color: #ff1a1a;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+    }
+
+    h1 {
+      color: #ff1a1a;
+    }
+
+    textarea {
+      width: 300px;
+      height: 100px;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #1a1a1a;
+      color: #ff4d4d;
+      border: 1px solid #ff4d4d;
+      border-radius: 8px;
+    }
+
+    button {
+      margin-top: 10px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #ff1a1a;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: none; /* Hide default cursor */
+    }
+
+    button:hover {
+      background-color: #e60000;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 24px;
+      font-weight: bold;
+      color: #ff3333;
+    }
+
+    .music-links {
+      margin-top: 20px;
+      display: flex;
+      gap: 20px;
+    }
+
+    .music-link {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      background-color: #ff1a1a;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      cursor: none; /* Hide default cursor */
+    }
+
+    .music-link:hover {
+      background-color: #cc0000;
+    }
+  </style>
+</head>
+<body>
+  <h1>Text Emotion Detector</h1>
+  <textarea id="text" placeholder="Type your message here..."></textarea><br>
+  <button onclick="detectEmotion()">Detect Emotion</button>
+  <div id="result"></div>
+
+  <div id="music-links" class="music-links">
+    <a id="spotify-link" class="music-link" target="_blank">Spotify Playlist</a>
+    <a id="youtube-link" class="music-link" target="_blank">YouTube Playlist</a>
+    <a id="apple-music-link" class="music-link" target="_blank">Apple Music Playlist</a>
+  </div>
+
+  <!-- Custom Cursor -->
+  <div id="custom-cursor"></div>
+
+  <script>
+    async function detectEmotion() {
+      const text = document.getElementById("text").value;
+
+      const response = await fetch("/detect", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ text })
+      });
+
+      const data = await response.json();
+      document.getElementById("result").innerText = `Emotion: ${data.emotion} Playlist:`;
+
+      if (data.music_links) {
+        document.getElementById("spotify-link").href = data.music_links.spotify;
+        document.getElementById("youtube-link").href = data.music_links.youtube;
+        document.getElementById("apple-music-link").href = data.music_links.apple_music;
+      }
+    }
+
+    // Cursor follow
+    const cursor = document.getElementById("custom-cursor");
+    document.addEventListener("mousemove", (e) => {
+      cursor.style.left = `${e.clientX}px`;
+      cursor.style.top = `${e.clientY}px`;
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Surprise Me / I'm Lazy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none;
+    }
+
+    body {
+      background-color: #000000; /* Black background */
+      font-family: 'Poppins', sans-serif;
+      color: #ffffff;
+      text-align: center;
+      margin: 0;
+      padding: 40px;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      font-family: 'Fredoka One', cursive;
+      color: #e74c3c;
+      text-shadow: 2px 2px 10px rgba(255, 0, 0, 0.4);
+    }
+
+    p {
+      font-size: 1.1rem;
+      margin-bottom: 40px;
+      color: #ffb3b3;
+    }
+
+    .mood-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin-bottom: 50px;
+    }
+
+    .mood-button {
+      font-size: 2.5rem;
+      background: #1a1a1a;
+      border: none;
+      border-radius: 50%;
+      width: 90px;
+      height: 90px;
+      cursor: pointer;
+      box-shadow: 10px 10px 15px #b3b8c2, -10px -10px 15px #ffffff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .mood-button:hover {
+      transform: scale(1.1);
+      box-shadow: 0px 0px 20px rgba(255, 105, 180, 0.6), 0px 0px 20px rgba(0, 132, 255, 0.6);
+      background: linear-gradient(45deg, #ff69b4, #0084ff);
+      color: white;
+    }
+
+    .links {
+      display: none;
+      animation: fadeIn 0.5s ease-in;
+    }
+
+    .links h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      font-family: 'Fredoka One', cursive;
+    }
+
+    .links a {
+      display: inline-block;
+      margin: 10px;
+      padding: 15px 25px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: bold;
+      background: #e0e5ec;
+      color: #333;
+      box-shadow: 5px 5px 10px #b3b8c2, -5px -5px 10px #ffffff;
+      transition: all 0.3s ease-in-out;
+    }
+
+    .links a:hover {
+      background: linear-gradient(45deg, #ff69b4, #0084ff);
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0px 0px 20px rgba(255, 105, 180, 0.6), 0px 0px 20px rgba(0, 132, 255, 0.6);
+    }
+
+    /* Custom red dot cursor */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 15px;
+      height: 15px;
+      background-color: red;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>😎 Surprise Me / I'm Lazy</h1>
+  <p>Select your mood and let the music find you 🎶</p>
+
+  <div class="mood-buttons">
+    <button class="mood-button" onclick="showLinks('Happy')">🥳</button>
+    <button class="mood-button" onclick="showLinks('Sad')">😢</button>
+    <button class="mood-button" onclick="showLinks('Calm')">😌</button>
+    <button class="mood-button" onclick="showLinks('Angry')">😠</button>
+    <button class="mood-button" onclick="showLinks('Romantic')">😍</button>
+    <button class="mood-button" onclick="showLinks('Surprise')">😮</button>
+  </div>
+
+  <div class="links" id="playlistLinks"></div>
+
+  <script>
+    const playlists = {
+      "Surprise": {
+        "Spotify": "https://open.spotify.com/show/2EJPkN70Jq6UaJnwaZa7tJ?si=TDB_bCoITTWgx6FTQKLMYQ&nd=1&dlsi=7f965ee080f94970",
+        "YouTube": "https://www.youtube.com/watch?v=4IOnFtphS6g",
+        "Apple Music": "https://music.apple.com/us/playlist/surprise-playlist/pl.5678ijk9012"
+      },
+      "Happy": {
+        "Spotify": "https://open.spotify.com/playlist/37i9dQZF1DWZKuerrwoAGz?si=LN905NWRRtqvd4nzBv5rBw",
+        "YouTube": "https://www.youtube.com/channel/UCtBBEQw4SFYOcrZKzY7quCQ",
+        "Apple Music": "https://music.apple.com/playlist/happy123"
+      },
+      "Sad": {
+        "Spotify": "https://open.spotify.com/playlist/37i9dQZF1DX7qK8ma5wgG1?si=Mi82heteQEeStjaVT-MpsQ&pi=3zd0K3NSRVWST",
+        "YouTube": "https://www.youtube.com/watch?app=desktop&v=s7FTAxw37hk&t=251s",
+        "Apple Music": "https://music.apple.com/playlist/sad123"
+      },
+      "Calm": {
+        "Spotify": "https://open.spotify.com/playlist/30VCumZ3LKfQQqD3alyltu?si=2Z5xxNRdTKON7Q8V8ElVyg&pi=uZBLDJ43RpScq&nd=1&dlsi=fc2ae31022a34a9b",
+        "YouTube": "https://www.youtube.com/watch?v=WpZ1WiqCf94",
+        "Apple Music": "https://music.apple.com/playlist/calm123"
+      },
+      "Angry": {
+        "Spotify": "https://open.spotify.com/playlist/37i9dQZF1EIhuCNl2WSFYd?si=zQO5AeOlRfaj2rlZJLPUlw&pi=lgKHsHENTUSSR&nd=1&dlsi=e9f3f377667b4e15",
+        "YouTube": "https://www.youtube.com/watch?v=3Z0_rDmKlc0&pp=ygUMI2FzaGl0b3ZoaW5h",
+        "Apple Music": "https://music.apple.com/playlist/angry123"
+      },
+      "Romantic": {
+        "Spotify": "https://open.spotify.com/playlist/4y61zEEdKhJMaKAGO503Wx?si=TAiTv1J9RoOqM_qWnfV6hA&pi=9YOGEB6DQ5aSb&nd=1&dlsi=b6bfd3d073934516",
+        "YouTube": "https://www.youtube.com/watch?v=romantic123",
+        "Apple Music": "https://music.apple.com/playlist/romantic123"
+      }
+    };
+
+    function showLinks(mood) {
+      const linksDiv = document.getElementById('playlistLinks');
+      const links = playlists[mood];
+      linksDiv.innerHTML = `
+        <h2>${mood} Playlist 🎧</h2>
+        <a href="${links.Spotify}" target="_blank">🎵 Spotify</a>
+        <a href="${links.YouTube}" target="_blank">🎬 YouTube</a>
+        <a href="${links["Apple Music"]}" target="_blank">🍎 Apple Music</a>
+      `;
+      linksDiv.style.display = 'block';
+    }
+
+    const cursor = document.createElement('div');
+    cursor.classList.add('cursor');
+    document.body.appendChild(cursor);
+
+    document.addEventListener('mousemove', (e) => {
+      cursor.style.left = e.clientX + 'px';
+      cursor.style.top = e.clientY + 'px';
+    });
+  </script>
+
+</body>
+</html>
